@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Rx8xEz4qv9t/OuYfN8sZEC7SHYuqpzp6kulj+4i9rD5YkB1JbVvBDH+DIA1HFyWaArRyi4uI1ywlWdR5CWlV/Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\maini\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\maini\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\maini\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\maini\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\maini\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\maini\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
