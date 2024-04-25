@@ -2,7 +2,7 @@
 {
     public class CampingSpot
     {
-        public int Id { get; set; }
+        public int Id { get; }
         public string Name { get; set; }
 
         public string Location { get; set; }
@@ -12,7 +12,7 @@
         public string Facilities { get; set; }
 
         public bool Availability { get; set; }
+        public int Owner_Id { get; set; }
 
-        Owner Owner { get; set; }
     }
 }

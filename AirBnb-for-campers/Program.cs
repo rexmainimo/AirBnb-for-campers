@@ -1,3 +1,5 @@
+using AirBnb_for_campers.Data;
+
 namespace AirBnb_for_campers
 {
     public class Program
@@ -13,10 +15,16 @@ namespace AirBnb_for_campers
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+/*
+            Rex: adding singletong
+ */
+            builder.Services.AddSingleton(typeof(ICampingSpot), typeof (CampingSpotData));
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())    
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
