@@ -15,11 +15,18 @@ namespace AirBnb_for_campers.Controllers
         {
             campingspot_data = _campingspot_data;
         }
-        /*[HttpGet]
+        [HttpGet]
         public ActionResult<IEnumerable<CampingSpot>> Get()
         {
-            return Ok(campingspot_data.GetCampingSpots());
-        }*/
+            try
+            {
+                return Ok(campingspot_data.GetCampingSpots());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         [HttpPost]
         public IActionResult Post([FromBody] CampingSpot spot)
         {
@@ -31,15 +38,14 @@ namespace AirBnb_for_campers.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Not added, problem in line 41:" + ex.Message);
                 //throw new Exception(ex.Message);
             }
         }
         [HttpGet("{name}")]
-        public ActionResult<CampingSpot> Get(string name)
+        public ActionResult <IEnumerable<CampingSpot>> Get(string name)
         {
-            CampingSpot s = new CampingSpot();
-            if(name == s.Name) return Ok(s);
+            if(name != null) return Ok(campingspot_data.GetSpotByName(name));
             return NotFound("camping spot not found, try again!");
         }
 

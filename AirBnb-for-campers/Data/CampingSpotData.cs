@@ -1,14 +1,15 @@
 ﻿using AirBnb_for_campers.Models;
+using MySqlConnector;
 
 namespace AirBnb_for_campers.Data
 {
     public class CampingSpotData : ICampingSpot
     {
-        readonly Database db = new Database();
+        private readonly Database db = new Database();
 
         public bool Addcampingspot(CampingSpot spot)
         {
-            // Define the SQL query with placeholders for parameters
+            // SQL query with placeholders for parameters
             string query = "INSERT INTO `campingspots` (`Name`, `Location`, `Description`, `Facilities`, `Availability`, `Owner_id`) " +
                            "VALUES (@Name, @Location, @Description, @Facilities, @Availability, @Owner_Id)";
 
@@ -23,26 +24,19 @@ namespace AirBnb_for_campers.Data
                 { "@Owner_Id", spot.Owner_Id }
             };
 
-            // Execute the query with parameters using the ExecuteQuery method
+            // Execute the query with parameters using the ExecuteQuery method in the database class
             return db.ExecuteQuery(query, parameters);
         }
-
-        /*public void Addcampingspot(CampingSpot spot)
+        public IEnumerable<CampingSpot> GetCampingSpots()
         {
-            string query = $"INSERT INTO `campingspots`(`CampingSpot_id`, `Name`, `Location`, `Description`, `Facilities`, `Availability`, `Owner_id`) " +
-                     $"VALUES ('{spot.Id}', '{spot.Name}', '{spot.Location}', '{spot.Description}', '{spot.Facilities}', '{spot.Availability}', '{spot.Owner_Id}');";
+            string query = "SELECT * FROM `campingspots`;";
 
-            db.ExecuteQuery(query);
-        }*/
-        /*public IEnumerable<CampingSpot> GetCampingSpots()
+            return db.ExtractQuery(query); 
+        }
+        public IEnumerable<CampingSpot> GetSpotByName(string name)
         {
-            string query = $"SELECT * FROM `campingspots`;";
-            if(db.ExecuteQuery(query))
-            {
-                return
-            }
-        }*/
-
-
+            string query = $"SELECT CampingSpot_id, Name, Location, Description, Facilities, Availability, Owner_id FROM `campingspots` WHERE Name LIKE '%{name}%';";
+            return db.ExtractQueryByName(query);
+        }
     }
 }
