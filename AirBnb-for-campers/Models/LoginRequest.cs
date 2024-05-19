@@ -1,0 +1,8 @@
+﻿namespace AirBnb_for_campers.Models
+{
+    public class LoginRequest
+    {
+        public string Username {  get; set; }
+        public string Password { get; set; }
+    }
+}

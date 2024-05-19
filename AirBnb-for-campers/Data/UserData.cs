@@ -1,4 +1,5 @@
 ﻿using AirBnb_for_campers.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AirBnb_for_campers.Data
 {
@@ -8,12 +9,13 @@ namespace AirBnb_for_campers.Data
 
         public bool CreateNewUser(User newUser)
         {
-            string query = "INSERT INTO `Users` (`FirstName`, `LastName`, `Email`, `PASSWORD`, `PhoneNum`, `LogDateTime`) " + 
+            string query = "INSERT INTO `Users` (`FirstName`, `LastName`, `UserName`, `Email`, `PASSWORD`, `PhoneNum`, `LogDateTime`) " + 
                 "VALUES (@FirstName, @LastName, @Email, @PASSWORD, @PhoneNum, @LogDateTime)";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 {"@FirstName", newUser.FirstName },
                 {"@LastName", newUser.LastName },
+                {"@UserName", newUser.UserName },
                 {"@Email", newUser.Email },
                 {"@PASSWORD", newUser.Password },
                 {"@PhoneNum", newUser.PhoneNum },
@@ -23,9 +25,9 @@ namespace AirBnb_for_campers.Data
             return db.ExecuteQuery(query, parameters);
 
         }
-        public bool Logging(string username, string password)
+        public bool Logging(LoginRequest loginRequest)
         {
-            if (username == null || password == null)
+            if (loginRequest == null)
             {
                 return false;
             }
@@ -35,8 +37,8 @@ namespace AirBnb_for_campers.Data
 
                 Dictionary<string, Object> paramters = new Dictionary<string, object>
                 {
-                    { "@FirstName", username },
-                    { "@PASSWORD", password },
+                    { "@FirstName", loginRequest.Username },
+                    { "@PASSWORD", loginRequest.Password },
                 };
                 int count = db.VerifyLoggingInfor<int>(query, paramters);
 
@@ -47,6 +49,19 @@ namespace AirBnb_for_campers.Data
             
         }
 
-       
+        public bool UploadProfilePicture(int userId, string profilePictureUrl)
+        {
+            string query = "UPDATE Users SET ProfilePictureUrl = @profilePictureUrl WHERE User_id = @userId";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+            {"@profilePictureUrl", profilePictureUrl },
+            {"@userId", userId }
+            };
+
+            return db.ExecuteQuery(query, parameters);
+        }
+
+
+
     }
 }

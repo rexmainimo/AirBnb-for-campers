@@ -1,4 +1,5 @@
 using AirBnb_for_campers.Data;
+using AirBnb_for_campers.Models;
 using Microsoft.Extensions.FileProviders;
 
 namespace AirBnb_for_campers
@@ -14,7 +15,7 @@ namespace AirBnb_for_campers
             // Add services to the container.
             builder.Services.AddCors(s => s.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
                                                     .AllowAnyMethod()
-                                                    .AllowAnyHeader()));
+                                                    .AllowAnyHeader())); 
             
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -26,6 +27,7 @@ namespace AirBnb_for_campers
              */
             builder.Services.AddSingleton(typeof(ICampingSpot), typeof(CampingSpotData));
             builder.Services.AddSingleton(typeof(IUsers), typeof(UserData));
+            //builder.Services.AddSingleton<IUsers, UserData>();
 
             var app = builder.Build();
             app.UseCors("MyPolicy");
@@ -35,6 +37,10 @@ namespace AirBnb_for_campers
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            //userprofile
+            /*app.UseHttpsRedirection();
+            app.UseStaticFiles();*/ // Enable serving static files (for profile pictures)
 
             app.UseAuthorization();
 

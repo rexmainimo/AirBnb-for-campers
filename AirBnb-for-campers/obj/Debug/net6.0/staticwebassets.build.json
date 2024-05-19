@@ -1,11 +1,71 @@
 {
   "Version": 1,
-  "Hash": "52I6Eu96WDq7/ld5L65kkOfeQ8zXK+FhH136o0YOcTc=",
+  "Hash": "LN7BebWSQjcVyOmcqWYmDLRcukEGDQO6bjqgbY9hiQk=",
   "Source": "AirBnb-for-campers",
   "BasePath": "_content/AirBnb-for-campers",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "AirBnb-for-campers\\wwwroot",
+      "Source": "AirBnb-for-campers",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\congo.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/congo.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\congo.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\congo-mine.avif",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/congo-mine.avif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\congo-mine.avif"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\lithium mining.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/lithium mining.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\lithium mining.jpg"
+    }
+  ]
 }

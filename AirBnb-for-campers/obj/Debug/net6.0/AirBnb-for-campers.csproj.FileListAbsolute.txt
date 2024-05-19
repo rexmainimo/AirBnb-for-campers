@@ -33,3 +33,4 @@ C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\MySqlConnector.dll
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\AirBnb-for-campers.staticwebassets.runtime.json

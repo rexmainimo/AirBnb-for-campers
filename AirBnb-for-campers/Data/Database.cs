@@ -62,16 +62,16 @@ namespace AirBnb_for_campers.Data
                 }
                 catch (MySqlException ex)
                 {
-                    Console.WriteLine("Query execution failed: " + "false" + " " +  ex.Message);
+                    Console.WriteLine("Query execution failed: " + "false" + " " + ex.Message);
                     throw;
-                    
+
                 }
-               /* finally
+                finally
                 {
                     // Close the connection
                     connection.Close();
-                }*/
-                
+                }
+
             }
         }
 
@@ -107,7 +107,7 @@ namespace AirBnb_for_campers.Data
                             }
                         }
                     }
-                    
+
                 }
                 catch (MySqlException ex)
                 {
@@ -123,7 +123,7 @@ namespace AirBnb_for_campers.Data
         }
         public IEnumerable<CampingSpot> ExtractQueryByName(string query)
         {
-            List<CampingSpot> spots = new List<CampingSpot> ();
+            List<CampingSpot> spots = new List<CampingSpot>();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -197,12 +197,13 @@ namespace AirBnb_for_campers.Data
                 {
                     CloseConnection();
                 }
-               
+
             }
-            
+
 
         }
 
+       
     }
 
 }

@@ -15,7 +15,7 @@ namespace AirBnb_for_campers.Controllers
             user_data = newUserData;
         }
 
-        [HttpPost]
+        [HttpPost("registration")]
         public IActionResult Post([FromBody] User newUser)
         {
             try
@@ -30,22 +30,56 @@ namespace AirBnb_for_campers.Controllers
 
         }
 
-        [HttpGet]
-        public IActionResult UserLogging(string username, string password)
+        [HttpPost("login")]
+        public IActionResult UserLogging([FromBody] LoginRequest loginRequest)
         {
             try
             {
-                if(user_data.Logging(username, password) == true)
+                if (string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
                 {
-                    return Ok("Logging successful!");
+                    return BadRequest(new { message = "Username and Password are required!" });
                 }
-                return NotFound("Incorrect Username or Password");
-                //return Ok(user_data.Logging(username, password) + " Logging successful!");
+                bool isverified = user_data.Logging(loginRequest);
+                if(isverified)
+                {
+                    return Ok(new { message = "Logging successful!" });
+                }
+                else
+                {
+                    return NotFound(new { message = "Invalid Username or Password" });
+                }
+                
+                
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("uploadProfilePicture")]
+        
+        public async Task<IActionResult> UploadProfilePicture(IFormFile file, int userId)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var filePath = Path.Combine("wwwroot", "images", file.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            string profilePictureUrl = $"/images/{file.FileName}";
+            if (user_data.UploadProfilePicture(userId, profilePictureUrl))
+            {
+                return Ok(new { Message = "Profile picture updated successfully.", ProfilePictureUrl = profilePictureUrl });
+            }
+            return StatusCode(500, "An error occurred while updating the profile picture.");
+        }
+
+
     }
 }
