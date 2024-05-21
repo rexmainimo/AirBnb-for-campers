@@ -27,20 +27,18 @@ namespace AirBnb_for_campers
              */
             builder.Services.AddSingleton(typeof(ICampingSpot), typeof(CampingSpotData));
             builder.Services.AddSingleton(typeof(IUsers), typeof(UserData));
-            //builder.Services.AddSingleton<IUsers, UserData>();
+            builder.Services.AddSingleton(typeof(IOwners), typeof(OwnerDatabase));
 
             var app = builder.Build();
+            app.UseHttpsRedirection();
             app.UseCors("MyPolicy");
+            app.UseRouting();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            //userprofile
-            /*app.UseHttpsRedirection();
-            app.UseStaticFiles();*/ // Enable serving static files (for profile pictures)
 
             app.UseAuthorization();
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "LN7BebWSQjcVyOmcqWYmDLRcukEGDQO6bjqgbY9hiQk=",
+  "Hash": "KMQZTSbxZ5yIckRRsIyBHHs+mAfjT/J5vMzj6k0ZVNo=",
   "Source": "AirBnb-for-campers",
   "BasePath": "_content/AirBnb-for-campers",
   "Mode": "Default",
@@ -16,6 +16,23 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\389fc8c6-fd3b-4931-8000-eefb55894522.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/389fc8c6-fd3b-4931-8000-eefb55894522.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\389fc8c6-fd3b-4931-8000-eefb55894522.jpg"
+    },
     {
       "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\congo.jpg",
       "SourceId": "AirBnb-for-campers",
@@ -34,12 +51,12 @@
       "OriginalItemSpec": "wwwroot\\images\\congo.jpg"
     },
     {
-      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\congo-mine.avif",
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\e5b6791b-159a-4b50-b1d2-0a52b3cef928.jpeg",
       "SourceId": "AirBnb-for-campers",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
       "BasePath": "_content/AirBnb-for-campers",
-      "RelativePath": "images/congo-mine.avif",
+      "RelativePath": "images/e5b6791b-159a-4b50-b1d2-0a52b3cef928.jpeg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -48,15 +65,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\congo-mine.avif"
+      "OriginalItemSpec": "wwwroot\\images\\e5b6791b-159a-4b50-b1d2-0a52b3cef928.jpeg"
     },
     {
-      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\lithium mining.jpg",
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\Enfants_cobalt_mines.jpg",
       "SourceId": "AirBnb-for-campers",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
       "BasePath": "_content/AirBnb-for-campers",
-      "RelativePath": "images/lithium mining.jpg",
+      "RelativePath": "images/Enfants_cobalt_mines.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -65,7 +82,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\lithium mining.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\Enfants_cobalt_mines.jpg"
     }
   ]
 }

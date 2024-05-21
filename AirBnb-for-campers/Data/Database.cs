@@ -199,11 +199,36 @@ namespace AirBnb_for_campers.Data
                 }
 
             }
+        }
+        public object ExecuteScalar(string query, Dictionary<string, object> parameters)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        // Add parameters to the command
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
 
-
+                        return cmd.ExecuteScalar();
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception("Query execution failed: " + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
-       
     }
 
 }

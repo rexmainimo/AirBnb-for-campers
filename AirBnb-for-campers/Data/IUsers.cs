@@ -7,6 +7,8 @@ namespace AirBnb_for_campers.Data
         bool CreateNewUser(User newUser);
 
         bool Logging(LoginRequest loginRequest);
-        bool UploadProfilePicture(int userId, string userProfileUrl);
+        bool UploadProfilePictureToDb(int userId, string userProfileUrl);
+        string GetProfilePictureUrl(int userId);
+        bool DeleteProfilePicture(int userId);
     }
 }
