@@ -1,6 +1,7 @@
 ﻿using AirBnb_for_campers.Data;
 using AirBnb_for_campers.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace AirBnb_for_campers.Controllers
 {
@@ -39,10 +40,11 @@ namespace AirBnb_for_campers.Controllers
                 {
                     return BadRequest(new { message = "Username and Password are required!" });
                 }
-                bool isverified = user_data.Logging(loginRequest);
-                if(isverified)
+                int? userId = user_data.Logging(loginRequest);
+
+                if(userId.HasValue)
                 {
-                    return Ok(new { message = "Logging successful!" });
+                    return Ok(new { message = userId.Value });
                 }
                 else
                 {
@@ -53,10 +55,54 @@ namespace AirBnb_for_campers.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { message = "An error occurred while logging in.", error = ex.Message });
+            }
+        }
+        [HttpGet("{Id}")]
+        public ActionResult <IEnumerable<User>>  RetrieveUserInfor(int userId)
+        {
+            try
+            {
+                if (userId == null || userId == 0) 
+                {
+                    return BadRequest(new { message = "Insert valid User Id" });
+                }
+                return Ok(user_data.GetUserInfo(userId));
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new {message = "Error retrieving user information.", error = ex.Message});
+            }
+        } 
+        [HttpPut("updateUserInfo")]
+        public IActionResult UpdateUserInformation([FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest(new { message = "User data is null or invalid" });
+            }
+
+            try
+            {
+                bool isUpdated = user_data.UpdateUserInfo(user);
+
+                if (isUpdated)
+                {
+                    return Ok(new { message = "User information updated successfully", user });
+                }
+                else
+                {
+                    return NotFound(new { message = "User information not updated" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here (e.g., using a logging framework)
+                return StatusCode(500, new { message = "Internal server error", error = ex.Message });
             }
         }
 
+        // incomplete, still needs to return the image posted by the user back to the frontend!
         [HttpPost("uploadProfilePicture")]
         public async Task<IActionResult> UploadProfilePicture(IFormFile profilePicture, int userId)
         {
@@ -70,7 +116,7 @@ namespace AirBnb_for_campers.Controllers
                 // Validate file type
                 if (!IsImage(profilePicture))
                 {
-                    return BadRequest("Invalid file type. Only images are allowed.");
+                    return BadRequest(new { message = "Invalid file type. Only images are allowed." });
                 }
 
                 // Generate a unique filename
@@ -93,7 +139,8 @@ namespace AirBnb_for_campers.Controllers
                 string profilePictureUrl = $"/images/{fileName}";
                 if(user_data.UploadProfilePictureToDb(userId, profilePictureUrl) == true)
                 {
-                    return Ok(new { message = (IActionResult)profilePicture });//Ok(new { Message = "Profile picture updated successfully.", ProfilePictureUrl = profilePictureUrl });
+                    return Ok(new { message = "Profile picture updated successfully.", ProfilePictureUrl = profilePictureUrl });
+                    //Ok(new { message = (IActionResult)profilePicture });//
                 }
                 else
                 {

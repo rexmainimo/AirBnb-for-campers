@@ -12,7 +12,7 @@ namespace AirBnb_for_campers
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add Core services to the container.
             builder.Services.AddCors(s => s.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
                                                     .AllowAnyMethod()
                                                     .AllowAnyHeader())); 
@@ -32,6 +32,7 @@ namespace AirBnb_for_campers
             var app = builder.Build();
             app.UseHttpsRedirection();
             app.UseCors("MyPolicy");
+            app.UseStaticFiles();
             app.UseRouting();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

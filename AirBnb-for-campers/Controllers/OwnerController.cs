@@ -38,10 +38,10 @@ namespace AirBnb_for_campers.Controllers
                 {
                     return BadRequest(new { message = "Id and Password are required!" });
                 }
-                bool isVerified = owner_data.OwnerLogin(ownerLoginRequest);
-                if (isVerified)
+                int? ownerId = owner_data.OwnerLogin(ownerLoginRequest);
+                if (ownerId.HasValue)
                 {
-                    return Ok(new { message = "Login successful."   });
+                    return Ok(new { message = "Login successful.", ownerId.Value });
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace AirBnb_for_campers.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while logging in.", error = ex.Message });
             }
 
         }

@@ -166,9 +166,58 @@ namespace AirBnb_for_campers.Data
             return spots;
 
         }
+        // get user information
+        public IEnumerable<User> ExtractUserInfo(string query, Dictionary<string, object> parameters)
+        {
+            List<User> info = new List<User>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        // Add parameters to the command
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                User user = new User
+                                {
+                                    FirstName = reader.GetString("FirstName"),
+                                    LastName = reader.GetString("LastName"),
+                                    UserName = reader.GetString("UserName"),
+                                    Email = reader.GetString("Email"),
+                                    // Assuming PhoneNum is stored as string in the database
+                                    PhoneNum = (int?)reader.GetInt64("PhoneNum"),
+                                    Password = reader.GetString("PASSWORD")
+                                };
+                                info.Add(user);
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    // Consider logging the exception instead of writing to console
+                    return null;
+                }
+                // No need for finally block to close connection; using statement handles it
+            }
+
+            return info;
+        }
+
 
         // Verify user logging information
-        public T VerifyLoggingInfor<T>(string query, Dictionary<string, object> parameters)
+        public int? VerifyUserLoggin (string query, Dictionary<string, object> parameters)
         {
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -183,22 +232,58 @@ namespace AirBnb_for_campers.Data
                             cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
                         }
 
-                        object result = cmd.ExecuteScalar();
-                        return (T)Convert.ChangeType(result, typeof(T));
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return reader.GetInt32("User_id");
+                            }
+                        }
                     }
-
                 }
                 catch (MySqlException ex)
                 {
                     Console.WriteLine("Query execution failed: " + ex.Message);
-                    throw;
+                    return null;
                 }
-                finally
-                {
-                    CloseConnection();
-                }
-
             }
+
+            return null;
+        }
+
+        // Verify owner logging information
+        public int? VerifyOwnerLogin(string query, Dictionary<string, object> parameters)
+        {
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return reader.GetInt32("Owner_id");
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    return null;
+                }
+            }
+
+            return null;
         }
         public object ExecuteScalar(string query, Dictionary<string, object> parameters)
         {

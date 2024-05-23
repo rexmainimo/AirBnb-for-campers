@@ -20,22 +20,22 @@ namespace AirBnb_for_campers.Data
             };
             return db.ExecuteQuery(query, parameters);
         }
-        public bool OwnerLogin(OwnerLoginRequest owner)
+        public int? OwnerLogin(OwnerLoginRequest owner)
         {
             if(owner == null || string.IsNullOrEmpty(owner.Password) || owner.Id == null)
             {
-                return false;
+                return null;
             }
             else
             {
-                string query = "SELECT COUNT(*) FROM `Owners` WHERE Owner_id = @ownerId AND PASSWORD = @Password";
+                string query = "SELECT `Owner_id` FROM `Owners` WHERE Owner_id = @ownerId AND PASSWORD = @Password";
                 Dictionary<string, object> paramters = new Dictionary<string, object>
                 {
                     {"@ownerId", owner.Id },
                     {"@Password", owner.Password }
                 };
-                int count = db.VerifyLoggingInfor<int>(query, paramters);
-                return count > 0;
+                return db.VerifyOwnerLogin(query, paramters);
+                
             }
         }
     }

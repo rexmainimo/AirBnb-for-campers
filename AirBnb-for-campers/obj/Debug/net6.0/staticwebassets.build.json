@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "KMQZTSbxZ5yIckRRsIyBHHs+mAfjT/J5vMzj6k0ZVNo=",
+  "Hash": "+Ig7uo9/DnV2YD+RthXDsif1EkMywZBasxvFDa3/0V8=",
   "Source": "AirBnb-for-campers",
   "BasePath": "_content/AirBnb-for-campers",
   "Mode": "Default",
@@ -17,6 +17,23 @@
   ],
   "Assets": [
     {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\3617d0c1-27ab-4a55-ac07-8b455f1c2f0b.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/3617d0c1-27ab-4a55-ac07-8b455f1c2f0b.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\3617d0c1-27ab-4a55-ac07-8b455f1c2f0b.jpg"
+    },
+    {
       "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\389fc8c6-fd3b-4931-8000-eefb55894522.jpg",
       "SourceId": "AirBnb-for-campers",
       "SourceType": "Discovered",
@@ -32,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\389fc8c6-fd3b-4931-8000-eefb55894522.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\929e9e48-00a7-4930-bb3d-cb2b6cb29389.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/929e9e48-00a7-4930-bb3d-cb2b6cb29389.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\929e9e48-00a7-4930-bb3d-cb2b6cb29389.jpg"
     },
     {
       "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\congo.jpg",

@@ -6,6 +6,6 @@ namespace AirBnb_for_campers.Data
     {
         bool CreateNewOwner(Owner newOwner);
 
-        bool OwnerLogin(OwnerLoginRequest loginRequest);
+        int? OwnerLogin(OwnerLoginRequest loginRequest);
     }
 }
