@@ -3,12 +3,14 @@
     public class Booking
     {
         public int Id { get; set; }
-        User User { get; set; }
-        CampingSpot CampingSpot { get; set; }
-        public DateTime BookingDate { get; set; }
-        public DateTime CheckInDate { get; set; }
-        public DateTime CheckOutDate { get; set;}
-        public decimal TotalPrice { get; set; }
+        public DateTime BookingDate { get; set; } //= DateTime.Now;
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int NumOfPeople { get; set; }
+        public decimal Price { get; set; }
+        public int User_id { get; set; }
+        public int CampinpingSpot_id { get; set; }
+        
 
 
     }

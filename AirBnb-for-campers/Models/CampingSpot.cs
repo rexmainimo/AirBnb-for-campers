@@ -2,7 +2,7 @@
 {
     public class CampingSpot
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public string Location { get; set; }

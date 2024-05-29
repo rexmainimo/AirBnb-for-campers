@@ -62,7 +62,7 @@ namespace AirBnb_for_campers.Data
             //method update user personal information
             if (user == null || user.Id == 0)
             {
-                throw new ArgumentException("User or user ID cannot be null");
+                throw new ArgumentException("User or user ID cannot be null or 0");
             }
 
             var updates = new List<string>();
@@ -109,7 +109,15 @@ namespace AirBnb_for_campers.Data
 
             return db.ExecuteQuery(query, parameters);
         }
-
+        public string GetUserName(int id)
+        {
+            string query = "SELECT `FirstName`, `LastName` FROM `Users` WHERE `User_id` = @id";
+            Dictionary<string, object> paramters = new Dictionary<string, object>
+            {
+                {"@id", id }
+            };
+            return db.ExtractUserName(query, paramters);
+        }
 
         // incomplete 
         public bool UploadProfilePictureToDb(int userId, string profilePictureUrl)

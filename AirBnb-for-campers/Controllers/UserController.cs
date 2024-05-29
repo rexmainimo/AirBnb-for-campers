@@ -58,12 +58,12 @@ namespace AirBnb_for_campers.Controllers
                 return StatusCode(500, new { message = "An error occurred while logging in.", error = ex.Message });
             }
         }
-        [HttpGet("{Id}")]
+        [HttpGet]
         public ActionResult <IEnumerable<User>>  RetrieveUserInfor(int userId)
         {
             try
             {
-                if (userId == null || userId == 0) 
+                if (userId == 0) 
                 {
                     return BadRequest(new { message = "Insert valid User Id" });
                 }
@@ -74,10 +74,10 @@ namespace AirBnb_for_campers.Controllers
                 return StatusCode(500, new {message = "Error retrieving user information.", error = ex.Message});
             }
         } 
-        [HttpPut("updateUserInfo")]
+        [HttpPut("updateInfo")]
         public IActionResult UpdateUserInformation([FromBody] User user)
         {
-            if (user == null)
+            if (user == null || user.Id == 0)
             {
                 return BadRequest(new { message = "User data is null or invalid" });
             }
@@ -99,6 +99,18 @@ namespace AirBnb_for_campers.Controllers
             {
                 // Log the exception here (e.g., using a logging framework)
                 return StatusCode(500, new { message = "Internal server error", error = ex.Message });
+            }
+        }
+        [HttpGet("userName")]
+        public IActionResult GetUserName(int userId)
+        {
+            try
+            {
+                return Ok(new { message = user_data.GetUserName(userId) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new {ex.Message});
             }
         }
 

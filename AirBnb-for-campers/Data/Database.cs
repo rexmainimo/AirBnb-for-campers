@@ -95,7 +95,7 @@ namespace AirBnb_for_campers.Data
                             {
                                 CampingSpot spot = new CampingSpot
                                 {
-                                    //Id = reader.GetInt32("CampingSpot_id"),
+                                    Id = reader.GetInt32("CampingSpot_id"),
                                     Name = reader.GetString("Name"),
                                     Location = reader.GetString("Location"),
                                     Description = reader.GetString("Description"),
@@ -215,6 +215,45 @@ namespace AirBnb_for_campers.Data
             return info;
         }
 
+        // Get user first and last name
+        public string ExtractUserName(string query, Dictionary<string, object> parameters)
+        {
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string firstName = reader.GetString("FirstName");
+                                string lastName = reader.GetString("LastName" );
+
+                                return firstName + " " + lastName;
+                                
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
 
         // Verify user logging information
         public int? VerifyUserLoggin (string query, Dictionary<string, object> parameters)
@@ -312,6 +351,58 @@ namespace AirBnb_for_campers.Data
                     connection.Close();
                 }
             }
+        }
+        public IEnumerable<BookingInfo> ExtractUserBookings(string query, Dictionary<string, object> parameters)
+        {
+            List<BookingInfo> booked_spots = new List<BookingInfo>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        // Add parameters to the command
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                BookingInfo booked = new BookingInfo
+                                {
+                                    BookingDate = reader.GetDateTime("BookingDate"),
+                                    StartDate = reader.GetDateTime("StartDate"),
+                                    EndDate = reader.GetDateTime("EndDate"),
+                                    NumOfPeople = reader.GetInt32("NumOfPeople"),
+                                    Price = reader.GetDecimal("Price"),
+                                    CampingSpotName = reader.GetString("Name"),
+                                    CampingSpotLocation = reader.GetString("Location"),
+                                    CampingSpotDescription = reader.GetString("Description"),
+                                    CampingSpotFacilities = reader.GetString("Facilities")
+                                };
+                                booked_spots.Add(booked);
+
+                            };
+                               
+                            
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    // Consider logging the exception instead of writing to console
+                    return null;
+                }
+                // No need for finally block to close connection; using statement handles it
+            }
+
+            return booked_spots;
         }
 
     }
