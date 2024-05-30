@@ -405,6 +405,56 @@ namespace AirBnb_for_campers.Data
             return booked_spots;
         }
 
+        public IEnumerable<RateAndCommentInfo> GetRatingsAndComments(string query)
+        {
+            // return object RateAndCommentInfor, rates and comments on a camping spot with the user name
+            List<RateAndCommentInfo> info = new List<RateAndCommentInfo>();
+            
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        // Add parameters to the command
+                        /*foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }*/
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                RateAndCommentInfo details = new RateAndCommentInfo
+                                {
+                                    Rating = reader.GetInt32("Rating"),
+                                    Comment = reader.GetString("Comment"),
+                                    FirstName = reader.GetString("FirstName"),
+                                    CampingSpotName = reader.GetString("Name"),
+                                    
+                                };
+                                info.Add(details);
+
+                            };
+
+
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    // Consider logging the exception instead of writing to console
+                    return null;
+                }
+                // No need for finally block to close connection; using statement handles it
+            }
+
+            return info;
+        }
+
     }
 
 }

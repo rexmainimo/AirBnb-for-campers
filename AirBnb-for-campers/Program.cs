@@ -29,6 +29,7 @@ namespace AirBnb_for_campers
             builder.Services.AddSingleton(typeof(IUsers), typeof(UserData));
             builder.Services.AddSingleton(typeof(IOwners), typeof(OwnerDatabase));
             builder.Services.AddSingleton(typeof(IBooking), typeof(BookingData));
+            builder.Services.AddSingleton(typeof(IRatingsAndComments), typeof(RateAndCommentData));
 
             var app = builder.Build();
             app.UseHttpsRedirection();
