@@ -34,7 +34,8 @@ namespace AirBnb_for_campers.Data
         public IEnumerable<BookingInfo> GetUserBookings(int id)
         {
             string query = "SELECT BookingDate, StartDate, EndDate, NumOfPeople, Price, " +
-                   "campingspots.Name, campingspots.Location, campingspots.Description, campingspots.Facilities " +
+                   "campingspots.Name, campingspots.City, campingspots.PostalNum, campingspots.StreetNum, " +
+                   "campingspots.HouseNum, campingspots.Description, campingspots.Facilities " +
                    "FROM bookings " +
                    "INNER JOIN campingspots ON bookings.CampingSpot_id = campingspots.CampingSpot_id " +
                    "WHERE User_id = @UserId";

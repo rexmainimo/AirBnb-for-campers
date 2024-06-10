@@ -24,7 +24,7 @@ namespace AirBnb_for_campers.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new (ex.Message);
             }
         }
         [HttpPost]
@@ -32,21 +32,98 @@ namespace AirBnb_for_campers.Controllers
         {
             try
             {
-                campingspot_data.Addcampingspot(spot);
+                if (campingspot_data.Addcampingspot(spot))
+                {
+                    return Ok(new { message = "Spot added successfully!" });
+                }
+                else
+                {
+                    return NotFound("Could not add spot");
+                }
 
-                return Ok("Spot added successfully!");
+               
             }
             catch (Exception ex)
             {
-                return BadRequest("Not added, problem in line 41:" + ex.Message);
-                //throw new Exception(ex.Message);
+                return BadRequest("Error adding spot: " + ex.Message);
+                
             }
         }
-        [HttpGet("{name}")]
-        public ActionResult <IEnumerable<CampingSpot>> Get(string name)
+        [HttpGet("name")]
+        public ActionResult<IEnumerable<CampingSpot>> GetByName(string name)
         {
-            if(name != null) return Ok(campingspot_data.GetSpotByName(name));
-            return NotFound("camping spot not found, try again!");
+            try
+            {
+                if (name != null) 
+                    return Ok(campingspot_data.GetSpotByName(name));
+                return NotFound("camping spot not found, try again!");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("city")]
+        public ActionResult<IEnumerable<CampingSpot>> GetByCity(string city)
+        {
+            try
+            {
+                if (city != null) 
+                    return Ok(campingspot_data.GetSpotByCity(city));
+                return NotFound("camping spot not found, try again!");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("description")]
+        public ActionResult<IEnumerable<CampingSpot>> GetByDescription(string description)
+        {
+            try
+            {
+                if (description != null)
+                    return Ok(campingspot_data.GetSpotByDescription(description));
+                return NotFound("camping spot not found, try again!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("availability")]
+        public ActionResult<IEnumerable<CampingSpot>> GetByAvailabilty(string available)
+        {
+            try
+            {
+                if (available != null)
+                    return Ok(campingspot_data.GetSpotByAvailability(available));
+                return NotFound("camping spot not found, try again!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("ownerId")]
+        public ActionResult<IEnumerable<CampingSpot>> GetCampingSpots(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    return Ok(campingspot_data.GetOwnerCampingspot(id));
+                }
+                else
+                {
+                    return NotFound(new { message = "Not found" });
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /*

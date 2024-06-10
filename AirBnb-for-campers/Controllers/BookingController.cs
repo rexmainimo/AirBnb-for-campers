@@ -36,7 +36,7 @@ namespace AirBnb_for_campers.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-        [HttpGet]
+        [HttpGet("user")]
         public ActionResult <Booking> UserBookings (int id)
         {
             try
@@ -49,7 +49,7 @@ namespace AirBnb_for_campers.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {message = ex.Message});
+                return BadRequest(new {message = "error: " + ex.Message});
             }
         }
     }

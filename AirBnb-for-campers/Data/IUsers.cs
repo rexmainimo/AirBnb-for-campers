@@ -8,7 +8,8 @@ namespace AirBnb_for_campers.Data
         int? Logging(LoginRequest loginRequest);
         IEnumerable<User> GetUserInfo(int user_id);
         string GetUserName(int userId);
-        bool UploadProfilePictureToDb(int userId, string userProfileUrl);
+        string GetUserPictureUrl(int id);
+        string UploadProfilePictureToDb(string userProfileUrl, int userId);
         string GetProfilePictureUrl(int userId);
         bool DeleteProfilePicture(int userId);
 

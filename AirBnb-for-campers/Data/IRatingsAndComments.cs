@@ -5,6 +5,6 @@ namespace AirBnb_for_campers.Data
     public interface IRatingsAndComments
     {
         bool IsRatingOrComment(RatingsAndComments ratingsAndComments);
-        IEnumerable<RateAndCommentInfo> GetRatingsAndComments();
+        IEnumerable<RateAndCommentInfo> GetRatingsAndComments(int spot_id);
     }
 }

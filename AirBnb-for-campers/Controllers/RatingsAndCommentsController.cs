@@ -31,11 +31,15 @@ namespace AirBnb_for_campers.Controllers
             }
         }
         [HttpGet]
-        public ActionResult<IEnumerable<RateAndCommentInfo>> AllRatingsAndComments()
+        public ActionResult<IEnumerable<RateAndCommentInfo>> AllRatingsAndComments(int spot_id)
         {
             try
             {
-                return Ok(new { message = ratings_comments.GetRatingsAndComments() });
+                if(spot_id != 0)
+                {
+                    return Ok(ratings_comments.GetRatingsAndComments(spot_id));
+                }
+                return BadRequest("Invalid Id:" + " " + spot_id);
             }
             catch (Exception ex)
             {

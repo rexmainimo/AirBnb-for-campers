@@ -8,7 +8,10 @@
         public int NumOfPeople { get; set; }
         public decimal Price { get; set; }
         public string CampingSpotName { get; set; }
-        public string CampingSpotLocation { get; set; }
+        public string CampingSpotCity { get; set; }
+        public string PostalNum { get; set; }
+        public int StreetNum {  get; set; }
+        public int HouseNum {  get; set; }
         public string CampingSpotDescription { get; set; }
         public string CampingSpotFacilities { get; set; }
 

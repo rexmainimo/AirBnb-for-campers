@@ -41,7 +41,7 @@ namespace AirBnb_for_campers.Controllers
                 int? ownerId = owner_data.OwnerLogin(ownerLoginRequest);
                 if (ownerId.HasValue)
                 {
-                    return Ok(new { message = "Login successful.", ownerId.Value });
+                    return Ok(ownerId.Value );
                 }
                 else
                 {

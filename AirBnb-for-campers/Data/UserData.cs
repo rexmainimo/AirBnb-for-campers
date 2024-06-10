@@ -116,11 +116,20 @@ namespace AirBnb_for_campers.Data
             {
                 {"@id", id }
             };
-            return db.ExtractUserName(query, paramters);
+            return db.ExtractUser(query, paramters);
+        }
+        public string GetUserPictureUrl(int id)
+        {
+            string query = "SELECT `profilePictureUrl` FROM `Users` WHERE `User_id` = @id";
+            Dictionary<string, object> paramters = new Dictionary<string, object>
+            {
+                {"@id", id }
+            };
+            return db.ExtractUserPictureUrl(query, paramters);
         }
 
         // incomplete 
-        public bool UploadProfilePictureToDb(int userId, string profilePictureUrl)
+        public string UploadProfilePictureToDb(string profilePictureUrl, int userId)
         {
             string query = "UPDATE Users SET ProfilePictureUrl = @profilePictureUrl WHERE User_id = @userId";
 
@@ -129,14 +138,12 @@ namespace AirBnb_for_campers.Data
                 {"@userId", userId }
             };
 
-            if(db.ExecuteQuery(query, parameters) == true)
+            bool isQuerySuccessful = db.ExecuteQuery(query, parameters);
+            if(isQuerySuccessful)
             {
-                return true;            
+                return profilePictureUrl;            
             }
-            else
-            {
-                return false;
-            }
+            return null;
         }
 
         public string GetProfilePictureUrl(int userId)

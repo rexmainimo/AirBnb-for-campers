@@ -75,10 +75,73 @@ namespace AirBnb_for_campers.Data
             }
         }
 
+        // Method executes the query and returns a collection of camping spots
         public IEnumerable<CampingSpot> ExtractQuery(string query)
         {
-            // Method executes the query and returns a collection of camping spots
+            List<CampingSpot> spots = new List<CampingSpot>();
 
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                               /* string imageName = reader.GetString("Image");
+                                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", imageName);
+*/
+                                CampingSpot spot = new CampingSpot
+                                {
+                                    Id = reader.GetInt32("CampingSpot_id"),
+                                    Name = reader.GetString("Name"),
+                                    City = reader.GetString("City"),
+                                    PostalNum = reader.GetString("PostalNum"),
+                                    StreetNum = reader.GetInt32("StreetNum"),
+                                    HouseNum = reader.GetInt32("HouseNum"),
+                                    Description = reader.GetString("Description"),
+                                    Facilities = reader.GetString("Facilities"),
+                                    Availability = reader.GetString("Availability"),
+                                    Image = reader.GetString("Image"),
+                                    Owner_Id = reader.GetInt32("Owner_id"),
+                                    //ImageBase64 = ConvertImageToBase64(imagePath)  // Convert image to base64
+                                };
+                                spots.Add(spot);
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    return null;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return spots;
+        }
+
+        private string ConvertImageToBase64(string imagePath)
+        {
+            if (File.Exists(imagePath))
+            {
+                byte[] imageBytes = File.ReadAllBytes(imagePath);
+                return Convert.ToBase64String(imageBytes);
+            }
+            return null;
+        }
+
+
+        public IEnumerable<CampingSpot> ExtractCampingFilter(string query)
+        {
+            // Filters camping spots based on the search query string value and returns
+            // values 'CampingSpot' model.
             List<CampingSpot> spots = new List<CampingSpot>();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -97,54 +160,14 @@ namespace AirBnb_for_campers.Data
                                 {
                                     Id = reader.GetInt32("CampingSpot_id"),
                                     Name = reader.GetString("Name"),
-                                    Location = reader.GetString("Location"),
+                                    City = reader.GetString("City"),
+                                    PostalNum = reader.GetString("PostalNum"),
+                                    StreetNum = reader.GetInt32("StreetNum"),
+                                    HouseNum = reader.GetInt32("HouseNum"),
                                     Description = reader.GetString("Description"),
                                     Facilities = reader.GetString("Facilities"),
                                     Availability = reader.GetString("Availability"),
-                                    Owner_Id = reader.GetInt32("Owner_id"),
-                                };
-                                spots.Add(spot);
-                            }
-                        }
-                    }
-
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Query execution failed: " + ex.Message);
-                    return null;
-                }
-                finally
-                {
-                    CloseConnection();
-                }
-            }
-            return spots;
-        }
-        public IEnumerable<CampingSpot> ExtractQueryByName(string query)
-        {
-            List<CampingSpot> spots = new List<CampingSpot>();
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    //OpenConnection();
-                    connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                CampingSpot spot = new CampingSpot
-                                {
-                                    //Id = reader.GetInt32("CampingSpot_id"),
-                                    Name = reader.GetString("Name"),
-                                    Location = reader.GetString("Location"),
-                                    Description = reader.GetString("Description"),
-                                    Facilities = reader.GetString("Facilities"),
-                                    Availability = reader.GetString("Availability"),
+                                    Image = reader.GetString("Image"),
                                     Owner_Id = reader.GetInt32("Owner_id"),
                                 };
                                 spots.Add(spot);
@@ -216,7 +239,44 @@ namespace AirBnb_for_campers.Data
         }
 
         // Get user first and last name
-        public string ExtractUserName(string query, Dictionary<string, object> parameters)
+        public string ExtractUserPictureUrl(string query, Dictionary<string, object> parameters)
+        {
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string imageUrl = reader.GetString("profilePictureUrl");
+
+                                return imageUrl;
+                                
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    return null;
+                }
+            }
+
+            return null;
+        }
+        //Get user Name
+        public string ExtractUser(string query, Dictionary<string, object> parameters)
         {
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -236,10 +296,11 @@ namespace AirBnb_for_campers.Data
                             if (reader.Read())
                             {
                                 string firstName = reader.GetString("FirstName");
-                                string lastName = reader.GetString("LastName" );
+                                string lastName = reader.GetString("LastName");
+
 
                                 return firstName + " " + lastName;
-                                
+
                             }
                         }
                     }
@@ -253,6 +314,62 @@ namespace AirBnb_for_campers.Data
 
             return null;
         }
+        // Get owner spots
+        public IEnumerable<CampingSpot> ExtractOwnerSpots(string query, Dictionary<string, object> parameters)
+        {
+            List<CampingSpot> spots = new List<CampingSpot>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        foreach (var parameter in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                        }
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CampingSpot spot = new CampingSpot
+                                {
+                                    Name = reader.GetString("Name"),
+                                    City = reader.GetString("City"),
+                                    PostalNum = reader.GetString("PostalNum"),
+                                    StreetNum = reader.GetInt32("StreetNum"),
+                                    HouseNum = reader.GetInt32("HouseNum"),
+                                    Description = reader.GetString("Description"),
+                                    Facilities = reader.GetString("Facilities"),
+                                    Availability = reader.GetString("Availability"),
+                                    Image = reader.GetString("Image"),
+                                    Latitude = reader.GetDouble("Latitude"),
+                                    Longitude = reader.GetDouble("Longitude")
+                                };
+                                spots.Add(spot);
+                                
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Query execution failed: " + ex.Message);
+                    return null;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return spots;
+        }
+
+
 
 
         // Verify user logging information
@@ -381,7 +498,10 @@ namespace AirBnb_for_campers.Data
                                     NumOfPeople = reader.GetInt32("NumOfPeople"),
                                     Price = reader.GetDecimal("Price"),
                                     CampingSpotName = reader.GetString("Name"),
-                                    CampingSpotLocation = reader.GetString("Location"),
+                                    CampingSpotCity = reader.GetString("City"),
+                                    PostalNum = reader.GetString("PostalNum"),
+                                    StreetNum = reader.GetInt32("StreetNum"),
+                                    HouseNum = reader.GetInt32("HouseNum"),
                                     CampingSpotDescription = reader.GetString("Description"),
                                     CampingSpotFacilities = reader.GetString("Facilities")
                                 };
@@ -405,7 +525,7 @@ namespace AirBnb_for_campers.Data
             return booked_spots;
         }
 
-        public IEnumerable<RateAndCommentInfo> GetRatingsAndComments(string query)
+        public IEnumerable<RateAndCommentInfo> GetRatingsAndComments(string query, Dictionary<string, object> parameters)
         {
             // return object RateAndCommentInfor, rates and comments on a camping spot with the user name
             List<RateAndCommentInfo> info = new List<RateAndCommentInfo>();
@@ -418,10 +538,10 @@ namespace AirBnb_for_campers.Data
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         // Add parameters to the command
-                        /*foreach (var parameter in parameters)
+                        foreach (var parameter in parameters)
                         {
                             cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
-                        }*/
+                        }
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -432,7 +552,7 @@ namespace AirBnb_for_campers.Data
                                     Rating = reader.GetInt32("Rating"),
                                     Comment = reader.GetString("Comment"),
                                     FirstName = reader.GetString("FirstName"),
-                                    CampingSpotName = reader.GetString("Name"),
+                                    CreatedAt = reader.GetDateTime("CreatedAt"),
                                     
                                 };
                                 info.Add(details);
