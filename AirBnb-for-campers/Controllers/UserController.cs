@@ -113,90 +113,149 @@ namespace AirBnb_for_campers.Controllers
                 return BadRequest(new {ex.Message});
             }
         }
-        [HttpGet("pictureUrl")]
-        public IActionResult GetUserPictureUrl(int userId)
+        [HttpGet("pictureFile")]
+        public async Task<IActionResult> GetUserPictureUrl(int userId)
         {
             try
             {
-                return Ok(new { message = user_data.GetUserPictureUrl(userId) });
+                // Fetch the profile picture URL from the database
+                string profilePictureUrl = user_data.GetUserPictureUrl(userId);
+
+                if (profilePictureUrl != null)
+                {
+                    // Construct the full file path
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", profilePictureUrl.TrimStart('/'));
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                        string contentType = GetContentType(filePath);
+                        string fileName = Path.GetFileName(filePath);
+                        return File(fileBytes, contentType, fileName);
+                    }
+                    else
+                    {
+                        return NotFound("File not found.");
+                    }
+                }
+                else
+                {
+                    return NotFound("Profile picture URL not found for user.");
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        // incomplete, still needs to return the image posted by the user back to the frontend!
-        [HttpPost("uploadProfilePicture")]
-        public async Task<IActionResult> UploadProfilePicture([FromBody] ProfilePictureRequest request)
+        private string GetContentType(string path)
         {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types.ContainsKey(ext) ? types[ext] : "application/octet-stream";
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                { ".jpg", "image/jpeg" },
+                { ".jpeg", "image/jpeg" },
+                { ".png", "image/png" },
+                { ".gif", "image/gif" }
+            };
+        }
+
+        [HttpPost("uploadProfilePicture")]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile profilePicture, int userId)
+        {
+            if (profilePicture == null || profilePicture.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(request.ProfilePictureUrl) || request.UserId == 0)
+                // Validate file type
+                if (!IsImage(profilePicture))
                 {
-                    return BadRequest(new { message = "Invalid input." });
+                    return BadRequest(new { message = "Invalid file type. Only images are allowed." });
                 }
-                string result = user_data.UploadProfilePictureToDb(request.ProfilePictureUrl, request.UserId);
-                if (result != null)
+
+                // Generate a unique filename
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(profilePicture.FileName);
+
+                // Save file to wwwroot/images directory
+                var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                if (!Directory.Exists(imagesPath))
                 {
-                    return Ok(new { message = "Profile picture uploaded successfully", profilePictureUrl = result });
+                    Directory.CreateDirectory(imagesPath);
+                }
+
+                var filePath = Path.Combine(imagesPath, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                // Update profile picture URL in the database
+                string profilePictureUrl = $"/images/{fileName}";
+                if (user_data.UploadProfilePictureToDb(userId, profilePictureUrl))
+                {
+                    // Read the file and return it as a FileResult
+                    var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                    return File(fileBytes, profilePicture.ContentType, profilePicture.FileName);
                 }
                 else
                 {
-                    return StatusCode(500, new { message = "Failed to update profile picture in the database." });
+                    // Rollback file saving if database update fails
+                    System.IO.File.Delete(filePath);
+                    return StatusCode(500, "An error occurred while updating the profile picture.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-    public class ProfilePictureRequest
-    {
-        public string ProfilePictureUrl { get; set; }
-        public int UserId { get; set; }
-    }
+        private bool IsImage(IFormFile file)
+        {
+            // Check if the uploaded file is an image
+            var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
+            return allowedContentTypes.Contains(file.ContentType.ToLower());
+        }
 
 
-            private bool IsImage(IFormFile file)
+        [HttpDelete("deleteProfilePicture")]
+        public IActionResult DeleteProfilePicture(int userId)
+        {
+            // Get the current profile picture URL from the database
+            string profilePictureUrl = user_data.GetUserPictureUrl(userId);
+            if (string.IsNullOrEmpty(profilePictureUrl))
             {
-                // Check if the uploaded file is an image
-                if (file.ContentType.ToLower() == "image/jpeg" ||
-                    file.ContentType.ToLower() == "image/png" ||
-                    file.ContentType.ToLower() == "image/gif")
-                {
-                    return true;
-                }
-                return false;
+                return NotFound("Profile picture not found.");
             }
-            [HttpDelete("deleteProfilePicture")]
-            public IActionResult DeleteProfilePicture(int userId)
+
+            // Delete the profile picture from the server
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", profilePictureUrl.TrimStart('/'));
+            if (System.IO.File.Exists(filePath))
             {
-                // Get the current profile picture URL from the database
-                string profilePictureUrl = user_data.GetProfilePictureUrl(userId);
-                if (string.IsNullOrEmpty(profilePictureUrl))
-                {
-                    return NotFound("Profile picture not found.");
-                }
-
-                // Delete the profile picture from the server
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", profilePictureUrl.TrimStart('/'));
-                if(System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                }
-                else
-                {
-                    return NotFound("Profile Picture file not found.");
-                }
-
-                // Update the database to remove the profile picture URL
-                if (user_data.DeleteProfilePicture(userId))
-                {
-                    return Ok("Profile picture deleted succesfully.");
-                }
-                return StatusCode(500, "An error occured while deleting the profile picture.");
+                System.IO.File.Delete(filePath);
             }
+            else
+            {
+                return NotFound("Profile Picture file not found.");
+            }
+
+            // Update the database to remove the profile picture URL
+            if (user_data.DeleteProfilePicture(userId))
+            {
+                return Ok("Profile picture deleted succesfully.");
+            }
+            return StatusCode(500, "An error occured while deleting the profile picture.");
+        }
+
     }
 }

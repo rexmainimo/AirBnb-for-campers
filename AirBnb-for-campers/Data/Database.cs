@@ -105,9 +105,9 @@ namespace AirBnb_for_campers.Data
                                     Description = reader.GetString("Description"),
                                     Facilities = reader.GetString("Facilities"),
                                     Availability = reader.GetString("Availability"),
-                                    Image = reader.GetString("Image"),
+                                    ImageUrl = reader.GetString("Image"),
                                     Owner_Id = reader.GetInt32("Owner_id"),
-                                    //ImageBase64 = ConvertImageToBase64(imagePath)  // Convert image to base64
+                                   
                                 };
                                 spots.Add(spot);
                             }
@@ -126,17 +126,6 @@ namespace AirBnb_for_campers.Data
             }
             return spots;
         }
-
-        private string ConvertImageToBase64(string imagePath)
-        {
-            if (File.Exists(imagePath))
-            {
-                byte[] imageBytes = File.ReadAllBytes(imagePath);
-                return Convert.ToBase64String(imageBytes);
-            }
-            return null;
-        }
-
 
         public IEnumerable<CampingSpot> ExtractCampingFilter(string query)
         {
@@ -167,7 +156,7 @@ namespace AirBnb_for_campers.Data
                                     Description = reader.GetString("Description"),
                                     Facilities = reader.GetString("Facilities"),
                                     Availability = reader.GetString("Availability"),
-                                    Image = reader.GetString("Image"),
+                                    ImageUrl = reader.GetString("Image"),
                                     Owner_Id = reader.GetInt32("Owner_id"),
                                 };
                                 spots.Add(spot);
@@ -217,7 +206,6 @@ namespace AirBnb_for_campers.Data
                                     LastName = reader.GetString("LastName"),
                                     UserName = reader.GetString("UserName"),
                                     Email = reader.GetString("Email"),
-                                    // Assuming PhoneNum is stored as string in the database
                                     PhoneNum = (int?)reader.GetInt64("PhoneNum"),
                                     Password = reader.GetString("PASSWORD")
                                 };
@@ -238,7 +226,7 @@ namespace AirBnb_for_campers.Data
             return info;
         }
 
-        // Get user first and last name
+        // Get user profile picture URL when they login
         public string ExtractUserPictureUrl(string query, Dictionary<string, object> parameters)
         {
 
@@ -337,6 +325,7 @@ namespace AirBnb_for_campers.Data
                             {
                                 CampingSpot spot = new CampingSpot
                                 {
+                                    Id = reader.GetInt32("CampingSpot_id"),
                                     Name = reader.GetString("Name"),
                                     City = reader.GetString("City"),
                                     PostalNum = reader.GetString("PostalNum"),
@@ -345,9 +334,10 @@ namespace AirBnb_for_campers.Data
                                     Description = reader.GetString("Description"),
                                     Facilities = reader.GetString("Facilities"),
                                     Availability = reader.GetString("Availability"),
-                                    Image = reader.GetString("Image"),
-                                    Latitude = reader.GetDouble("Latitude"),
-                                    Longitude = reader.GetDouble("Longitude")
+                                    ImageUrl = reader.GetString("Image"),
+                                    
+                                    /* Latitude = reader.GetDouble("Latitude"),
+                                    Longitude = reader.GetDouble("Longitude")*/
                                 };
                                 spots.Add(spot);
                                 
@@ -368,8 +358,6 @@ namespace AirBnb_for_campers.Data
 
             return spots;
         }
-
-
 
 
         // Verify user logging information

@@ -10,6 +10,6 @@ namespace AirBnb_for_campers.Data
         IEnumerable<CampingSpot> GetSpotByCity(string city);
         IEnumerable<CampingSpot> GetSpotByDescription(string name);
         IEnumerable<CampingSpot> GetSpotByAvailability(string name);
-        IEnumerable<CampingSpot> GetOwnerCampingspot (int id);
+        IEnumerable<CampingSpot> GetOwnerCampingSpot (int id);
     }
 }

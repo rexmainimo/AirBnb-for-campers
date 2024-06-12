@@ -15,22 +15,9 @@ namespace AirBnb_for_campers.Data
         {
             try
             {
-                // convert base64 string to image
-                /* byte[] imageBytes = Convert.FromBase64String(spot.Image);
-                 using (MemoryStream ms = new MemoryStream(imageBytes))
-                 {
-                     Image image = Image.FromStream(ms);
-
-                     string imageName = Guid.NewGuid().ToString() + ".jpg";
-
-                     string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", imageName);
-                     image.Save(imagePath, ImageFormat.Jpeg);
-
-
-                 }*/
-                // SQL query with placeholders for parameters
-                string query = "INSERT INTO `campingspots` (`Name`, `City`, `PostalNum`, `StreetNum`, `HouseNum`, `Description`, `Facilities`, `Availability`, `Image`, `Owner_id`, `Latitude`, `Longitude`) " +
-                               "VALUES (@Name, @City, @PostalNum, @StreetNum, @HouseNum, @Description, @Facilities, @Availability, @Image, @Owner_Id, @Latitude, @Longitude)";
+               
+                string query = "INSERT INTO `campingspots` (`Name`, `City`, `PostalNum`, `StreetNum`, `HouseNum`, `Description`, `Facilities`, `Availability`, `Image`, `Owner_id`) " +
+                               "VALUES (@Name, @City, @PostalNum, @StreetNum, @HouseNum, @Description, @Facilities, @Availability, @Image, @Owner_Id)";
 
                 // Create a dictionary to hold the parameter values
                 Dictionary<string, object> parameters = new Dictionary<string, object>
@@ -43,10 +30,10 @@ namespace AirBnb_for_campers.Data
                         { "@Description", spot.Description },
                         { "@Facilities", spot.Facilities },
                         { "@Availability", spot.Availability },
-                        {"@Image", spot.Image },
+                        {"@Image", spot.ImageUrl },
                         { "@Owner_Id", spot.Owner_Id },
-                        {"@Latitude", spot.Latitude},
-                        {"@Longitude", spot.Longitude }
+                       /* {"@Latitude", spot.Latitude},
+                        {"@Longitude", spot.Longitude }*/
                     };
 
                 // Execute the query with parameters using the ExecuteQuery method in the database class
@@ -86,7 +73,7 @@ namespace AirBnb_for_campers.Data
             return db.ExtractCampingFilter(query);
         }
 
-        public IEnumerable<CampingSpot> GetOwnerCampingspot(int id)
+        public IEnumerable<CampingSpot> GetOwnerCampingSpot(int id)
         {
             string query = "SELECT * FROM `campingspots` WHERE Owner_id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>

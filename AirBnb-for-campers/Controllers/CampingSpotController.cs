@@ -16,39 +16,119 @@ namespace AirBnb_for_campers.Controllers
             campingspot_data = _campingspot_data;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<CampingSpot>> Get()
+        public async Task<ActionResult<IEnumerable<CampingSpot>>> Get()
         {
             try
             {
-                return Ok(campingspot_data.GetCampingSpots());
+                var spots = campingspot_data.GetCampingSpots();
+                foreach (var spot in spots)
+                {
+                    if (!string.IsNullOrEmpty(spot.ImageUrl))
+                    {
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", spot.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                            string contentType = GetContentType(filePath);
+                            spot.ImageData = fileBytes;
+                            spot.ImageContentType = contentType;
+                        }
+                    }
+                }
+
+                return Ok(spots);
             }
             catch (Exception ex)
             {
-                throw new (ex.Message);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types.ContainsKey(ext) ? types[ext] : "application/octet-stream";
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                { ".jpg", "image/jpeg" },
+                { ".jpeg", "image/jpeg" },
+                { ".png", "image/png" },
+                { ".gif", "image/gif" }
+            };
+        }
+
+
         [HttpPost]
-        public IActionResult Post([FromBody] CampingSpot spot)
+        public async Task<IActionResult> Post([FromForm] CampingSpot spot)
         {
             try
             {
-                if (campingspot_data.Addcampingspot(spot))
+                if (spot.Owner_Id == 0)
                 {
-                    return Ok(new { message = "Spot added successfully!" });
+                    return NotFound("Incorrect owner Id");
+                }
+
+                if (spot.ImageFile != null && IsImage(spot.ImageFile))
+                {
+                    // Generate a unique filename
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(spot.ImageFile.FileName);
+
+                    // Save file to wwwroot/spotImages directory
+                    var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "spotImages");
+                    if (!Directory.Exists(imagesPath))
+                    {
+                        Directory.CreateDirectory(imagesPath);
+                    }
+                    var filePath = Path.Combine(imagesPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await spot.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Update image URL
+                    spot.ImageUrl = $"/spotImages/{fileName}";
+
+                    if (campingspot_data.Addcampingspot(spot))
+                    {
+                        return Ok(new { message = "Spot added successfully!", imageUrl = spot.ImageUrl });
+                    }
+                    else
+                    {
+                        // Rollback file saving if database update fails
+                        System.IO.File.Delete(filePath);
+                        return StatusCode(500, "An error occurred while storing the image.");
+                    }
                 }
                 else
                 {
-                    return NotFound("Could not add spot");
+                    if (campingspot_data.Addcampingspot(spot))
+                    {
+                        return Ok(new { message = "Spot added successfully!" });
+                    }
+                    else
+                    {
+                        return NotFound("Could not add spot");
+                    }
                 }
-
-               
             }
             catch (Exception ex)
             {
                 return BadRequest("Error adding spot: " + ex.Message);
-                
             }
+}
+
+        private bool IsImage(IFormFile file)
+        {
+            // Check if the uploaded file is an image
+            var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
+            return allowedContentTypes.Contains(file.ContentType.ToLower());
         }
+
         [HttpGet("name")]
         public ActionResult<IEnumerable<CampingSpot>> GetByName(string name)
         {
@@ -106,24 +186,36 @@ namespace AirBnb_for_campers.Controllers
             }
         }
         [HttpGet("ownerId")]
-        public ActionResult<IEnumerable<CampingSpot>> GetCampingSpots(int id)
+        public async Task<ActionResult<IEnumerable<CampingSpot>>> GetCampingSpots(int id)
         {
+
             try
             {
-                if (id != 0)
+                var spots = campingspot_data.GetOwnerCampingSpot(id);
+                foreach (var spot in spots)
                 {
-                    return Ok(campingspot_data.GetOwnerCampingspot(id));
+                    if (!string.IsNullOrEmpty(spot.ImageUrl))
+                    {
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", spot.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                            string contentType = GetContentType(filePath);
+                            spot.ImageData = fileBytes;
+                            spot.ImageContentType = contentType;
+                        }
+                    }
                 }
-                else
-                {
-                    return NotFound(new { message = "Not found" });
-                }
-                    
+
+                return Ok(spots);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+
+
+
         }
 
         /*
