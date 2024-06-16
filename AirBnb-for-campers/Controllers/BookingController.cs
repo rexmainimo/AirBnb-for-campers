@@ -37,19 +37,75 @@ namespace AirBnb_for_campers.Controllers
             }
         }
         [HttpGet("user")]
-        public ActionResult <Booking> UserBookings (int id)
+        public async Task<ActionResult<Booking>> UserBookings (int id)
         {
             try
             {
-                if(id == 0)
+                if (id == 0)
                 {
                     return BadRequest(new { message = "Invalid id" });
                 }
-                return Ok(Booking_Data.GetUserBookings(id));
+
+                var spots = Booking_Data.GetUserBookings(id);
+                foreach (var spot in spots)
+                {
+                    if (!string.IsNullOrEmpty(spot.ImageUrl))
+                    {
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", spot.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                            string contentType = GetContentType(filePath);
+                            spot.ImageData = fileBytes;
+                            spot.ImageContentType = contentType;
+                        }
+                    }
+                }
+
+                return Ok(spots);
+
             }
             catch (Exception ex)
             {
                 return BadRequest(new {message = "error: " + ex.Message});
+            }
+        }
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types.ContainsKey(ext) ? types[ext] : "application/octet-stream";
+        }
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                { ".jpg", "image/jpeg" },
+                { ".jpeg", "image/jpeg" },
+                { ".png", "image/png" },
+                { ".gif", "image/gif" }
+            };
+        }
+        [HttpDelete("deleteBooking")]
+        public IActionResult DeleteBooking(int booking_id)
+        {
+            try
+            {
+                if(booking_id == 0)
+                {
+                    return BadRequest();
+                }
+                if (Booking_Data.DeleteBooking(booking_id))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }catch (Exception ex)
+            {
+                return BadRequest(new {message = ex.Message});
             }
         }
     }

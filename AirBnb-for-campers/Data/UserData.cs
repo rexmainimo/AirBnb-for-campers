@@ -10,37 +10,52 @@ namespace AirBnb_for_campers.Data
 
         public bool CreateNewUser(User newUser)
         {
-            string query = "INSERT INTO `Users` (`FirstName`, `LastName`, `UserName`, `Email`, `PASSWORD`, `PhoneNum`, `LogDateTime`) " + 
-                "VALUES (@FirstName, @LastName, @UserName, @Email, @PASSWORD, @PhoneNum, @LogDateTime)";
+            if (checkUser(newUser.Email))
+            {
+                string query = "INSERT INTO `Users` (`FirstName`, `LastName`, `Email`, `PASSWORD`, `PhoneNum`, `LogDateTime`) " +
+               "VALUES (@FirstName, @LastName, @Email, @PASSWORD, @PhoneNum, @LogDateTime)";
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
                 {"@FirstName", newUser.FirstName },
                 {"@LastName", newUser.LastName },
-                {"@UserName", newUser.UserName },
                 {"@Email", newUser.Email },
                 {"@PASSWORD", newUser.Password },
                 {"@PhoneNum", newUser.PhoneNum },
                 {"@LogDateTime", newUser.LogDateTime }
                 /*{"@ProfilePictureUrl", newUser.ProfilePictureUrl }*/
-            };
+                };
 
-            return db.ExecuteQuery(query, parameters);
+                return db.ExecuteQuery(query, parameters);
+            }
+            return false;
+           
+
+        }
+        private bool checkUser(string email)
+        {
+            string query = "SELECT COUNT(*) FROM `Users` WHERE `Email` = @Email";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                {"@Email", email},
+            };
+            int count = db.ExecuteScalar(query, parameters);
+            return count == 0;
 
         }
         public int? Logging(LoginRequest loginRequest)
         {
             if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Password) ||
-                string.IsNullOrEmpty(loginRequest.Username))
+                string.IsNullOrEmpty(loginRequest.Email))
             {
                 return null;
             }
 
             // Use this line to retrieve user_id for userhome processes in the frontend
-            string query = $"SELECT `User_id` FROM `Users` WHERE `FirstName` = @FirstName AND PASSWORD = @password;";
+            string query = $"SELECT `User_id` FROM `Users` WHERE `Email` = @Email AND PASSWORD = @password;";
 
             Dictionary<string, Object> paramters = new Dictionary<string, object>
             {
-                { "@FirstName", loginRequest.Username },
+                { "@Email", loginRequest.Email },
                 { "@PASSWORD", loginRequest.Password },
             };
             return db.VerifyUserLoggin(query, paramters);
@@ -49,7 +64,7 @@ namespace AirBnb_for_campers.Data
         public IEnumerable<User> GetUserInfo(int userId)
         {
             
-            string query = "SELECT `FirstName`, `LastName`, `UserName`, `Email`, `PhoneNum`, `PASSWORD` " +
+            string query = "SELECT `FirstName`, `LastName`, `Email`, `PhoneNum`, `PASSWORD` " +
                 "FROM `Users` WHERE `User_id` = @userId";
             Dictionary<string, object> parameter = new Dictionary<string, object>
             {
@@ -78,11 +93,7 @@ namespace AirBnb_for_campers.Data
                 updates.Add("`LastName` = @LastName");
                 parameters["@LastName"] = user.LastName;
             }
-            if (!string.IsNullOrEmpty(user.UserName))
-            {
-                updates.Add("`UserName` = @UserName");
-                parameters["@UserName"] = user.UserName;
-            }
+          
             if (!string.IsNullOrEmpty(user.Email))
             {
                 updates.Add("`Email` = @Email");
@@ -141,27 +152,6 @@ namespace AirBnb_for_campers.Data
            
             return isQuerySuccessful;
         }
-
-      /*  public string GetProfilePictureUrl(int userId)
-        {
-            string query = "SELECT ProfilePictureUrl FROM Users WHERE User_id = @userId";
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                {"@userId", userId}
-            };
-            return db.ExecuteScalar(query, parameters)?.ToString();
-        }*/
-        public bool DeleteProfilePicture(int userId)
-        {
-            string query = "UPDATE Users SET ProfilePictureUrl = NULL WHERE User_id = @userId";
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                {"@userId", userId }
-            };
-            return db.ExecuteQuery(query, parameters);
-        }
-
-
 
     }
 }

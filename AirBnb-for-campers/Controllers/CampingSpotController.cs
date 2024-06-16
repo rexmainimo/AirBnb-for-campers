@@ -120,7 +120,7 @@ namespace AirBnb_for_campers.Controllers
             {
                 return BadRequest("Error adding spot: " + ex.Message);
             }
-}
+        }
 
         private bool IsImage(IFormFile file)
         {

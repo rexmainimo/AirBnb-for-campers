@@ -204,7 +204,7 @@ namespace AirBnb_for_campers.Data
                                 {
                                     FirstName = reader.GetString("FirstName"),
                                     LastName = reader.GetString("LastName"),
-                                    UserName = reader.GetString("UserName"),
+                                    /*UserName = reader.GetString("UserName"),*/
                                     Email = reader.GetString("Email"),
                                     PhoneNum = (int?)reader.GetInt64("PhoneNum"),
                                     Password = reader.GetString("PASSWORD")
@@ -429,8 +429,9 @@ namespace AirBnb_for_campers.Data
 
             return null;
         }
-        public object ExecuteScalar(string query, Dictionary<string, object> parameters)
+        public int ExecuteScalar(string query, Dictionary<string, object> parameters)
         {
+            // Method executes a parameterized query and returns a single integer value(the result of the query)
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -438,13 +439,13 @@ namespace AirBnb_for_campers.Data
                     connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
-                        // Add parameters to the command
                         foreach (var parameter in parameters)
                         {
                             cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
                         }
 
-                        return cmd.ExecuteScalar();
+                        object result = cmd.ExecuteScalar();
+                        return Convert.ToInt32(result);
                     }
                 }
                 catch (MySqlException ex)
@@ -480,6 +481,7 @@ namespace AirBnb_for_campers.Data
                             {
                                 BookingInfo booked = new BookingInfo
                                 {
+                                    Id = reader.GetInt32("Booking_id"),
                                     BookingDate = reader.GetDateTime("BookingDate"),
                                     StartDate = reader.GetDateTime("StartDate"),
                                     EndDate = reader.GetDateTime("EndDate"),
@@ -491,7 +493,8 @@ namespace AirBnb_for_campers.Data
                                     StreetNum = reader.GetInt32("StreetNum"),
                                     HouseNum = reader.GetInt32("HouseNum"),
                                     CampingSpotDescription = reader.GetString("Description"),
-                                    CampingSpotFacilities = reader.GetString("Facilities")
+                                    CampingSpotFacilities = reader.GetString("Facilities"),
+                                    ImageUrl = reader.GetString("Image")
                                 };
                                 booked_spots.Add(booked);
 
@@ -554,10 +557,10 @@ namespace AirBnb_for_campers.Data
                 catch (MySqlException ex)
                 {
                     Console.WriteLine("Query execution failed: " + ex.Message);
-                    // Consider logging the exception instead of writing to console
+                    
                     return null;
                 }
-                // No need for finally block to close connection; using statement handles it
+               
             }
 
             return info;

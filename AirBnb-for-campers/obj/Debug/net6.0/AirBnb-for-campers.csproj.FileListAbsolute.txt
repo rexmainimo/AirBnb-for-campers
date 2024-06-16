@@ -37,3 +37,6 @@ C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\System.Drawing.Common.dll
 C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\SendGrid.dll
+C:\Users\maini\programming web\airBnb-for-campers\AirBnb-for-campers\AirBnb-for-campers\bin\Debug\net6.0\StarkbankEcdsa.dll

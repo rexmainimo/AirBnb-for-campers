@@ -33,9 +33,9 @@ namespace AirBnb_for_campers.Data
         }
         public IEnumerable<BookingInfo> GetUserBookings(int id)
         {
-            string query = "SELECT BookingDate, StartDate, EndDate, NumOfPeople, Price, " +
+            string query = "SELECT Booking_id, BookingDate, StartDate, EndDate, NumOfPeople, Price, " +
                    "campingspots.Name, campingspots.City, campingspots.PostalNum, campingspots.StreetNum, " +
-                   "campingspots.HouseNum, campingspots.Description, campingspots.Facilities " +
+                   "campingspots.HouseNum, campingspots.Description, campingspots.Facilities, campingspots.Image " +
                    "FROM bookings " +
                    "INNER JOIN campingspots ON bookings.CampingSpot_id = campingspots.CampingSpot_id " +
                    "WHERE User_id = @UserId";
@@ -44,6 +44,15 @@ namespace AirBnb_for_campers.Data
                     { "@UserId", id }
                 };
             return db.ExtractUserBookings(query, parameters);
+        }
+        public bool DeleteBooking(int id)
+        {
+            string query = "DELETE FROM `Bookings` WHERE `Booking_id` = @Booking_id";
+            Dictionary<string, object> parameter = new Dictionary<string, object>
+            {
+                {"@Booking_id", id }
+            };
+            return db.ExecuteQuery(query, parameter);
         }
         
     }

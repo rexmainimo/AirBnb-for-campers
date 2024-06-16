@@ -19,12 +19,11 @@ namespace AirBnb_for_campers.Models
         public int Owner_Id { get; set; }
 
         [NotMapped]
-        public byte[] ImageData { get; set; } // Property to hold the image data
+        public byte[]? ImageData { get; set; } // Property to hold the image data
         [NotMapped]
-        public string ImageContentType { get; set; } // Property to hold the image content type
+        public string? ImageContentType { get; set; } // Property to hold the image content type
     }
-    /* public double Latitude { get; set; }// 40.712776;
-     public double Longitude { get; set; }*/ //-74.005974;
+    
 
 
 }

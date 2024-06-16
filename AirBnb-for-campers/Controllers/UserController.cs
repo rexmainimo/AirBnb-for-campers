@@ -21,8 +21,16 @@ namespace AirBnb_for_campers.Controllers
         {
             try
             {
-                user_data.CreateNewUser(newUser);
-                return Ok(new { message = $"Sign up successful for: {newUser.FirstName}" });
+                if (user_data.CreateNewUser(newUser))
+                {
+                    return Ok(new { message = $"Sign up successful for: {newUser.FirstName}" });
+                }
+                else if (!user_data.CreateNewUser(newUser))
+                {
+                    return BadRequest(new {message = $"{newUser.Email} is already registered"});
+                }
+                return NotFound();
+               
             }
             catch (Exception ex)
             {
@@ -36,9 +44,9 @@ namespace AirBnb_for_campers.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
+                if (string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
                 {
-                    return BadRequest(new { message = "Username and Password are required!" });
+                    return BadRequest(new { message = "Email and Password are required!" });
                 }
                 int? userId = user_data.Logging(loginRequest);
 
@@ -48,7 +56,7 @@ namespace AirBnb_for_campers.Controllers
                 }
                 else
                 {
-                    return NotFound(new { message = "Invalid Username or Password" });
+                    return NotFound(new { message = "Invalid Email or Password" });
                 }
                 
                 
@@ -225,36 +233,6 @@ namespace AirBnb_for_campers.Controllers
             // Check if the uploaded file is an image
             var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
             return allowedContentTypes.Contains(file.ContentType.ToLower());
-        }
-
-
-        [HttpDelete("deleteProfilePicture")]
-        public IActionResult DeleteProfilePicture(int userId)
-        {
-            // Get the current profile picture URL from the database
-            string profilePictureUrl = user_data.GetUserPictureUrl(userId);
-            if (string.IsNullOrEmpty(profilePictureUrl))
-            {
-                return NotFound("Profile picture not found.");
-            }
-
-            // Delete the profile picture from the server
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", profilePictureUrl.TrimStart('/'));
-            if (System.IO.File.Exists(filePath))
-            {
-                System.IO.File.Delete(filePath);
-            }
-            else
-            {
-                return NotFound("Profile Picture file not found.");
-            }
-
-            // Update the database to remove the profile picture URL
-            if (user_data.DeleteProfilePicture(userId))
-            {
-                return Ok("Profile picture deleted succesfully.");
-            }
-            return StatusCode(500, "An error occured while deleting the profile picture.");
         }
 
     }

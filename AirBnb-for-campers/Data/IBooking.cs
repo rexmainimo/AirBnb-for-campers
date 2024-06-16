@@ -6,5 +6,6 @@ namespace AirBnb_for_campers.Data
     {
         bool BookCampingSpot(Booking booking);
         IEnumerable<BookingInfo> GetUserBookings(int id);
+        bool DeleteBooking(int id);
     }
 }

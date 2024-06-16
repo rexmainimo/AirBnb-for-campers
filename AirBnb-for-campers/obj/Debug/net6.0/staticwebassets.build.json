@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "B7szUJWgAsuF1Bua8456gZy3agceVcBuXOLw5oB0MUk=",
+  "Hash": "JGBBqsyV4tP3Fj9NyItv+XZFCAfv0yFre3jJQmmJT5I=",
   "Source": "AirBnb-for-campers",
   "BasePath": "_content/AirBnb-for-campers",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\501e1b98-badf-4e1e-80e1-b1876013b79e.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\a023cd04-530a-49b0-8838-eba4b62aeaa0.jpg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "images/a023cd04-530a-49b0-8838-eba4b62aeaa0.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\a023cd04-530a-49b0-8838-eba4b62aeaa0.jpg"
     },
     {
       "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\images\\bd5e8e42-ae98-4b62-b980-57351b573f52.jpeg",
@@ -151,6 +168,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\spotImages\\66b132d7-163a-4405-bc37-b3a4665f7ffa.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\spotImages\\a75266ab-839b-4422-887f-fe1be628728c.jpeg",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "spotImages/a75266ab-839b-4422-887f-fe1be628728c.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spotImages\\a75266ab-839b-4422-887f-fe1be628728c.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\spotImages\\e4efebfc-a484-45ed-b4fd-b5142d59763e.png",
+      "SourceId": "AirBnb-for-campers",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\maini\\programming web\\airBnb-for-campers\\AirBnb-for-campers\\AirBnb-for-campers\\wwwroot\\",
+      "BasePath": "_content/AirBnb-for-campers",
+      "RelativePath": "spotImages/e4efebfc-a484-45ed-b4fd-b5142d59763e.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spotImages\\e4efebfc-a484-45ed-b4fd-b5142d59763e.png"
     }
   ]
 }

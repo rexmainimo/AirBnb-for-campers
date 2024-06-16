@@ -10,8 +10,6 @@ namespace AirBnb_for_campers.Data
         string GetUserName(int userId);
         string GetUserPictureUrl(int id);
         bool UploadProfilePictureToDb(int userId, string userProfileUrl);
-        //string GetProfilePictureUrl(int userId);
-        bool DeleteProfilePicture(int userId);
 
         bool UpdateUserInfo(User user);
     }

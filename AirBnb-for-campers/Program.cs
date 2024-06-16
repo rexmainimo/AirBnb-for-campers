@@ -1,6 +1,8 @@
 using AirBnb_for_campers.Data;
 using AirBnb_for_campers.Models;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+
 
 namespace AirBnb_for_campers
 {
@@ -8,10 +10,15 @@ namespace AirBnb_for_campers
     {
         public static void Main(string[] args)
         {
-            /* This is an Integrated API with Login within the Same Application */
-
+           
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(options => {
+                options.ListenAnyIP(5156);
+                options.ListenAnyIP(7156, listenOptions => {
+                    listenOptions.UseHttps();
+                });
+            });
             // Add Core services to the container.
             builder.Services.AddCors(s => s.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
                                                     .AllowAnyMethod()
@@ -29,7 +36,8 @@ namespace AirBnb_for_campers
             builder.Services.AddSingleton(typeof(IUsers), typeof(UserData));
             builder.Services.AddSingleton(typeof(IOwners), typeof(OwnerDatabase));
             builder.Services.AddSingleton(typeof(IBooking), typeof(BookingData));
-            builder.Services.AddSingleton(typeof(IRatingsAndComments), typeof(RateAndCommentData));
+            builder.Services.AddSingleton(typeof(IRatingsAndComments), typeof(RateAndCommentData));      
+
 
             var app = builder.Build();
             app.UseHttpsRedirection();

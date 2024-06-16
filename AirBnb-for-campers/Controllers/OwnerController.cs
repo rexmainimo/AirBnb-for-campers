@@ -19,8 +19,16 @@ namespace AirBnb_for_campers.Controllers
         {
             try
             {
-                owner_data.CreateNewOwner(newOwner);
+                if (owner_data.CreateNewOwner(newOwner))
+                {
                     return Ok(new { message = "Account created successfully." });
+                }
+                else if (!owner_data.CreateNewOwner(newOwner))
+                {
+                    return BadRequest(new {message = $"{newOwner.Email} is already registered"});
+                }
+                return NotFound();
+                    
 
             }
             catch (Exception ex)
@@ -29,11 +37,11 @@ namespace AirBnb_for_campers.Controllers
             }
         }
         [HttpPost("login")]
-        public IActionResult OwnerLogin([FromBody] OwnerLoginRequest ownerLoginRequest)
+        public IActionResult OwnerLogin([FromBody] LoginRequest ownerLoginRequest)
         {
             try
             {
-                if (ownerLoginRequest == null || ownerLoginRequest.Id == null ||
+                if (ownerLoginRequest == null || string.IsNullOrEmpty(ownerLoginRequest.Email) ||
                 string.IsNullOrEmpty(ownerLoginRequest.Password))
                 {
                     return BadRequest(new { message = "Id and Password are required!" });
