@@ -52,7 +52,7 @@ namespace AirBnb_for_campers
             }
 
             app.UseAuthorization();
-
+            
 
             app.MapControllers();
 

@@ -1,1 +1,8 @@
-﻿Database.cs
+﻿wwwroot/
+# NuGet packages
+*.nupkg
+*.paket
+*.dll
+*.exe
+
+

@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\AirBnb-for-campers.props" />
-</Project>

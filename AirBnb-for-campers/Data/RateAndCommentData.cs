@@ -21,7 +21,7 @@ namespace AirBnb_for_campers.Data
         }
         public IEnumerable<RateAndCommentInfo> GetRatingsAndComments(int spot_id)
         {
-            // fix the query, not retrieving what is wanted.
+            
             string query = "SELECT RatingsAndComments.Rating, RatingsAndComments.Comment, Users.FirstName, RatingsAndComments.CreatedAt " +
                 "FROM RatingsAndComments " +
                 "INNER JOIN Users ON RatingsAndComments.User_id = Users.User_id " +
